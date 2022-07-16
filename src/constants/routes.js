@@ -2,7 +2,6 @@ import LoginUI from "../views/LoginUI.js"
 import BillsUI from "../views/BillsUI.js"
 import NewBillUI from "../views/NewBillUI.js"
 import DashboardUI from "../views/DashboardUI.js"
-
 export const ROUTES_PATH = {
   Login: '/',
   Bills: '#employee/bills',

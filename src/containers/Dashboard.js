@@ -13,6 +13,7 @@ export const filteredBills = (data, status) => {
       // in jest environment
       if (typeof jest !== 'undefined') {
         selectCondition = (bill.status === status)
+        console.log('selectCondition');
       }
       /* istanbul ignore next */
       else {
@@ -86,25 +87,42 @@ export default class {
   }
 
   handleEditTicket(e, bill, bills) {
-    if (this.counter === undefined || this.id !== bill.id) this.counter = 0
+    // debugger;
+    console.log("this.counter",this.counter);
+    console.log("name",bill.name);
+    console.log("this.status",this.status);
+    console.log("this.id",this.id);
+    if (this.counter === undefined) this.counter = 0
+    if (this.counter === undefined || this.id !== bill.id) this.counter = 1;
+    // if (this.status === undefined  || this.status !== bill.status) this.status = bill.status;
+    // if (this.status !== bill.status) this.counter = 0;
     if (this.id === undefined || this.id !== bill.id) this.id = bill.id
-    if (this.counter % 2 === 0) {
-      bills.forEach(b => {
-        $(`#open-bill${b.id}`).css({ background: '#0D5AE5' })
-      })
-      $(`#open-bill${bill.id}`).css({ background: '#2A2B35' })
-      $('.dashboard-right-container div').html(DashboardFormUI(bill))
-      $('.vertical-navbar').css({ height: '150vh' })
-      this.counter ++
-    } else {
+    // console.log("bill.status",bill.status);
+    console.log("this.counter2",this.counter);
+    // this.counter = (this.counter > 2) ?  1 : this.counter;
+    if ( this.counter % 2 == 0) {
+      //kapat
+      console.log('if ile kapandi', this.counter);
       $(`#open-bill${bill.id}`).css({ background: '#0D5AE5' })
 
       $('.dashboard-right-container div').html(`
         <div id="big-billed-icon" data-testid="big-billed-icon"> ${BigBilledIcon} </div>
       `)
       $('.vertical-navbar').css({ height: '120vh' })
-      this.counter ++
+      this.counter ++;
+      // console.log('mod 2 ifinden cikarken', this.counter);
+    } else {
+      //ac
+      console.log('ELSE ile tiklanip acildi:', this.counter);
+      bills.forEach(b => {
+        $(`#open-bill${b.id}`).css({ background: '#0D5AE5' })
+      })
+      $(`#open-bill${bill.id}`).css({ background: '#2A2B35' })
+      $('.dashboard-right-container div').html(DashboardFormUI(bill))
+      $('.vertical-navbar').css({ height: '150vh' })
+      this.counter ++;
     }
+    
     $('#icon-eye-d').click(this.handleClickIconEye)
     $('#btn-accept-bill').click((e) => this.handleAcceptSubmit(e, bill))
     $('#btn-refuse-bill').click((e) => this.handleRefuseSubmit(e, bill))
@@ -129,8 +147,9 @@ export default class {
     this.updateBill(newBill)
     this.onNavigate(ROUTES_PATH['Dashboard'])
   }
-
+  
   handleShowTickets(e, bills, index) {
+    console.log('gggggg');
     if (this.counter === undefined || this.index !== index) this.counter = 0
     if (this.index === undefined || this.index !== index) this.index = index
     if (this.counter % 2 === 0) {
@@ -146,7 +165,7 @@ export default class {
     }
 
     bills.forEach(bill => {
-      $(`#open-bill${bill.id}`).click((e) => this.handleEditTicket(e, bill, bills))
+      $(`#open-bill${bill.id}`).unbind().click((e) => this.handleEditTicket(e, bill, bills))
     })
 
     return bills

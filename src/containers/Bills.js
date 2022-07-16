@@ -26,15 +26,11 @@ export default class {
     $('#modaleFile').find(".modal-body").html(`<div style='text-align: center;' class="bill-proof-container"><img width=${imgWidth} src=${billUrl} alt="Bill" /></div>`)
     $('#modaleFile').modal('show')
   }
-
   getBills = () => {
     if (this.store) {
-      return this.store
-      .bills()
-      .list()
-      .then(snapshot => {
-        const bills = snapshot
-          .map(doc => {
+      console.log("this store",this.store)
+      return this.store.bills().list().then(snapshot => {
+        snapshot.map(doc => {
             try {
               return {
                 ...doc,
@@ -52,9 +48,25 @@ export default class {
               }
             }
           })
-          console.log('length', bills.length)
-        return bills
+         var arraySortByDate=[];
+          arraySortByDate =snapshot.sort(function(a,b){
+            // Turn your strings into dates, and then subtract them
+            // to get a value that is either negative, positive, or zero.
+            return new Date(b.date) - new Date(a.date);
+          });
+          console.log('length', arraySortByDate.length)
+          console.log(arraySortByDate);
+        return arraySortByDate;
       })
     }
   }
 }
+
+//  export const dataSortByDate = () => {
+//     var arraySortByDate = snapshot.sort(function(a,b){
+//       return new Date(b.Date) - new Date (a.Date);
+//     })
+//     console.log(arraySortByDate);
+
+//   return arraySortByDate;
+// }
