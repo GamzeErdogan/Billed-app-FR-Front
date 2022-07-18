@@ -67,7 +67,7 @@ export default ({ data: bills, loading, error }) => {
                 <th>Actions</th>
               </tr>
           </thead>
-          <tbody data-testid="tbody">
+          <tbody  id="billsList" data-testid="tbody">
             ${rows(bills)}
           </tbody>
           </table>

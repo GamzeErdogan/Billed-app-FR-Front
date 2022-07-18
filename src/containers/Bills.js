@@ -61,12 +61,3 @@ export default class {
     }
   }
 }
-
-//  export const dataSortByDate = () => {
-//     var arraySortByDate = snapshot.sort(function(a,b){
-//       return new Date(b.Date) - new Date (a.Date);
-//     })
-//     console.log(arraySortByDate);
-
-//   return arraySortByDate;
-// }
