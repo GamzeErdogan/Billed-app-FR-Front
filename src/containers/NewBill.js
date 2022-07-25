@@ -17,39 +17,41 @@ export default class NewBill {
     new Logout({ document, localStorage, onNavigate })
   }
   handleChangeFile = e => {
-    e.preventDefault();
+    e.preventDefault()
     const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
-      console.log("file",file);
-      if(file.type == 'image/jpeg' || file.type == 'image/png'){
-        const filePath = e.target.value.split(/\\/g)
-        console.log(filePath)
-        var fileName = filePath[filePath.length-1]
-        console.log(fileName)
-        console.log('resim fonk girdi');
+    const fileTitle = this.document.querySelector(`input[data-testid="file"]`);
+    const filePath = e.target.value.split(/\\/g)
+    let fileName = filePath[filePath.length - 1]
+    const formData = new FormData()
+    const email = JSON.parse(localStorage.getItem("user")).email
+    const regexImg = /(png|jpg|jpeg)/g;
+    formData.append('file', file)
+    formData.append('email', email)
 
-        var formData = new FormData()
-        const email = JSON.parse(localStorage.getItem("user")).email
-        formData.append('file', file)
-        formData.append('email', email)
-        this.store
-          .bills()
-          .create({
-            data: formData,
-            headers: {
-              noContentType: true
-            }
-          })
-          .then(({fileUrl, key}) => {
-            console.log(fileUrl)
-            this.billId = key
-            this.fileUrl = fileUrl
-            this.fileName = fileName
-          }).catch(error => console.error(error))
-      } else {
-        alert('alert');
-      }
+    if (e.target.value.match(regexImg)) {
+      this.document.getElementsByClassName("js-justificatif")[0].getElementsByTagName("small")[0].classList.add("d-none")
 
+      this.store
+        .bills()
+        .create({
+          data: formData,
+          headers: {
+            noContentType: true
+          }
+        })
+        .then(({ fileUrl, key }) => {
+          this.billId = key
+          this.fileUrl = fileUrl
+          this.fileName = fileName
+        }).catch(error => console.error(error))
+    }
+    else {
+      this.document.getElementsByClassName("js-justificatif")[0].getElementsByTagName("small")[0].classList.remove("d-none")
+      this.document.getElementsByClassName("js-justificatif")[0].getElementsByTagName("small")[0].style.display = "block"
+      fileTitle.value = "";
+    }
   }
+ 
   handleSubmit = e => {
     e.preventDefault()
     console.log('e.target.querySelector(`input[data-testid="datepicker"]`).value', e.target.querySelector(`input[data-testid="datepicker"]`).value)

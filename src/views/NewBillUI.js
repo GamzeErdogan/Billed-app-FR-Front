@@ -53,10 +53,13 @@ export default () => {
                     <label for="commentary" class="bold-label">Commentaire</label>
                     <textarea class="form-control blue-border" data-testid="commentary" rows="3"></textarea>
                   </div>
-                  <div class="col-half">
+                  <div class="col-half js-justificatif">
                     <label for="file" class="bold-label">Justificatif</label>
                     <input required type="file" class="form-control blue-border" data-testid="file"/>
+                    <div class="container-err">
+                    <small id="err-msg" class="d-none" data-testid="errorFile" style="display:none;">Veuillez séléctionner le bon format : png / jpeg / jpg</small>
                   </div>
+                    </div>
                 </div>
             </div>
             <div class="row">
