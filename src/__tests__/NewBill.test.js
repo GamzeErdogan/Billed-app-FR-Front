@@ -14,13 +14,11 @@
  import { ROUTES } from "../constants/routes"
  import Store from "../app/Store"
 
-const onNavigate = (pathname) => {
-  document.body.innerHTML = ROUTES({ pathname })
-}
+
 
 describe("Given I am connected as an employee", () => {
-  describe("When I am on NewBill Page,I fill and I click the button 'Envoyer'", () => {
-    test("If there is no input informaton is given, don't render the Bills Page", () => {
+  describe("When I am on NewBill Page and I click the button 'Envoyer'", () => {
+    test("Then If there is no input informaton is given, don't render the Bills Page", () => {
      localStorage.setItem("user",JSON.stringify({ type: 'Employee', email: "a@a"}));
      const root = document.createElement('div');
      root.setAttribute("id", "root");
@@ -39,7 +37,7 @@ describe("Given I am connected as an employee", () => {
 
 describe("Given I am connected as an employe", () => {
   describe("When I am on NewBill Page, I fill and I click the button 'Envoyer'", () => {
-    test('if all the input datas are OK, Then it should be render Bills Page', () => {
+    test('Then if all the input datas are OK, it should be render Bills Page', () => {
      localStorage.setItem("user",JSON.stringify({ type: 'Employee', email: "a@a"}));
      const root = document.createElement('div');
      root.setAttribute("id", "root");
@@ -147,4 +145,33 @@ describe("when I fill the image field with the correct format", () => {
     expect(file.files[0].name).toBe("test.png");
     expect(screen.getAllByText("Envoyer une note de frais")).toBeTruthy();
   })
+})
+describe('When an error occurs on API', () => {
+  beforeEach(() => {
+    jest.spyOn(mockStore, 'bills')
+    Object.defineProperty(
+      window,
+      'localStorage',
+      { value: localStorageMock }
+    )
+    window.localStorage.setItem('user', JSON.stringify({
+      type: 'Employee',
+      email: 'a@a'
+    }))
+    const root = document.createElement('div')
+    root.setAttribute('id', 'root')
+    document.body.appendChild(root)
+    router()
+  })
+  test('fetches bills from an API and fails with 500 message error', () => {
+    mockStore.bills.mockImplementationOnce(() =>
+      Promise.reject(new Error('Erreur 500'))
+    )
+    const html = BillsUI({ error: 'Erreur 500' })
+    document.body.innerHTML = html
+    const message = screen.getByText(/Erreur 500/)
+    expect(message).toBeTruthy()
+  })
+
+  
 })

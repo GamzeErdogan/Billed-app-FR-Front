@@ -17,7 +17,8 @@ export default class NewBill {
     new Logout({ document, localStorage, onNavigate })
   }
   handleChangeFile = e => {
-    e.preventDefault()
+    e.preventDefault();
+    
     const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
     const fileTitle = this.document.querySelector(`input[data-testid="file"]`);
     const filePath = e.target.value.split(/\\/g)
@@ -27,6 +28,7 @@ export default class NewBill {
     const regexImg = /(png|jpg|jpeg)/g;
     formData.append('file', file)
     formData.append('email', email)
+    
 
     if (e.target.value.match(regexImg)) {
       this.document.getElementsByClassName("js-justificatif")[0].getElementsByTagName("small")[0].classList.add("d-none")

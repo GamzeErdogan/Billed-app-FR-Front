@@ -49,12 +49,11 @@ export default class {
             }
           })
          var arraySortByDate=[];
+         //Sort the bills by date
           arraySortByDate =snapshot.sort(function(a,b){
-            // Turn your strings into dates, and then subtract them
-            // to get a value that is either negative, positive, or zero.
+
             return new Date(b.date) - new Date(a.date);
           });
-          console.log('length', arraySortByDate.length)
           console.log(arraySortByDate);
         return arraySortByDate;
       })
